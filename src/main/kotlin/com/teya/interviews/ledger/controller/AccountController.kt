@@ -37,7 +37,7 @@ class AccountController @Autowired constructor(
     fun getAccountDetails(@PathVariable id: Long): ResponseEntity<AccountDTO> {
         val userId = AuthHelper.getAuthenticatedUserId()
         val account = accountService.getAccountDetails(userId, id)
-        return ResponseEntity.ok(account!!)
+        return ResponseEntity.ok(account)
     }
 
     @Operation(summary = "Get Ledger Entries", description = "Retrieves ledger entries for the account")
@@ -47,7 +47,7 @@ class AccountController @Autowired constructor(
                          @RequestParam(required=false) end: Instant = Instant.now()
     ): ResponseEntity<List<LedgerEntryDTO>> {
         val userId = AuthHelper.getAuthenticatedUserId()
-        val ledger = accountService.getLedgerForAccount(userId!!, id, start, end)
+        val ledger = accountService.getLedgerForAccount(userId, id, start, end)
         return ResponseEntity.ok(ledger)
     }
 

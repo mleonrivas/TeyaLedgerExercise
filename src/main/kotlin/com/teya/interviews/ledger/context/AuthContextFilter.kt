@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component
 class AuthContextFilter : Filter {
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         if (request is HttpServletRequest) {
-            val userId = request.getHeader("X-User-Id")
+            val userId = request.getHeader(AuthHelper.USER_ID_HEADER)
             var authData = UsernamePasswordAuthenticationToken.unauthenticated(null, null)
             if(!userId.isNullOrBlank()) {
-                val userRole = request.getHeader("X-User-Role")
+                val userRole = request.getHeader(AuthHelper.USER_ROLE_HEADER)
                 val role = if(userRole.isNullOrBlank()) UserRole.USER else UserRole.valueOf(userRole)
                 authData = UsernamePasswordAuthenticationToken.authenticated(userId, null, listOf(SimpleGrantedAuthority(role.name)))
             }

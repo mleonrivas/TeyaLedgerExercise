@@ -35,20 +35,18 @@ class TransactionService @Autowired constructor(
             throw ResourceNotFoundException("Transaction not found")
         }
         if(transaction.get().type == TransactionType.TRANSFER) {
-            if(transaction.get().sourceAccount?.owner?.id != userId && transaction.get().destinationAccount?.owner?.id != userId) {
+            if(transaction.get().sourceAccount?.owner?.id != userId && transaction.get().destinationAccount.owner?.id != userId) {
                 throw AccessDeniedException()
             }
         } else {
-            if(transaction.get().destinationAccount?.owner?.id != userId) {
+            if(transaction.get().destinationAccount.owner?.id != userId) {
                 throw AccessDeniedException()
             }
         }
         return DTOConverter.MAPPER.map(transaction.get(), TransactionDTO::class.java)
     }
     fun executeTransaction(userId: String, request: TransactionRequestDTO, attempt: Int = 1): TransactionDTO {
-        if(request.amount <= BigDecimal.ZERO) {
-            throw IllegalArgumentException("Amount must be greater than 0")
-        }
+        require(request.amount > BigDecimal.ZERO) { "Amount must be greater than 0" }
         if(attempt > 3) {
             throw TransactionFailedException()
         }
@@ -137,9 +135,7 @@ class TransactionService @Autowired constructor(
         if (!account.isPresent || userId != account.get().owner.id) {
             throw AccessDeniedException()
         }
-        if(account.get().status != AccountStatus.ACTIVE) {
-            throw IllegalArgumentException("Account is ${account.get().status}")
-        }
+        require(account.get().status == AccountStatus.ACTIVE) { "Account is ${account.get().status}" }
         return account.get()
     }
     @Transactional

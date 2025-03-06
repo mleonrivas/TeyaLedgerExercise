@@ -3,8 +3,6 @@ package com.teya.interviews.ledger.model.dto
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.teya.interviews.ledger.model.Currency
 import com.teya.interviews.ledger.model.TransactionType
-import com.teya.interviews.ledger.repository.entity.Account
-import com.teya.interviews.ledger.repository.entity.LedgerEntry
 import java.math.BigDecimal
 import java.time.Instant
 

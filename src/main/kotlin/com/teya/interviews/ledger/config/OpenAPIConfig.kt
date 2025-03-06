@@ -1,5 +1,6 @@
 package com.teya.interviews.ledger.config
 
+import com.teya.interviews.ledger.context.AuthHelper
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
@@ -18,11 +19,11 @@ class OpenAPIConfig {
                     .title("Teya Ledger API")
                     .version("v1.0")
             )
-            .addSecurityItem(SecurityRequirement().addList("X-User-Id").addList("X-User-Role"))
+            .addSecurityItem(SecurityRequirement().addList(AuthHelper.USER_ID_HEADER).addList(AuthHelper.USER_ROLE_HEADER))
             .components(
                 io.swagger.v3.oas.models.Components()
-                    .addSecuritySchemes("X-User-Id", customHeaderScheme("X-User-Id"))
-                    .addSecuritySchemes("X-User-Role", customHeaderScheme("X-User-Role"))
+                    .addSecuritySchemes(AuthHelper.USER_ID_HEADER, customHeaderScheme(AuthHelper.USER_ID_HEADER))
+                    .addSecuritySchemes(AuthHelper.USER_ROLE_HEADER, customHeaderScheme(AuthHelper.USER_ROLE_HEADER))
             )
     }
 

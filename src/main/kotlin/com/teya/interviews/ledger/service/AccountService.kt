@@ -58,9 +58,8 @@ class AccountService @Autowired constructor(
         if (owner.isEmpty) {
             throw ResourceNotFoundException("ownerId ${request.ownerId} not found")
         }
-        if (request.initialBalance!! < BigDecimal.ZERO) {
-            throw IllegalArgumentException("initialBalance cannot be negative")
-        }
+        require(request.initialBalance!! >= BigDecimal.ZERO) { "initialBalance cannot be negative" }
+
         val entity = Account(
             currency = request.currency!!,
             balance = request.initialBalance!!,
